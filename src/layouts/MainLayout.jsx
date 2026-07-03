@@ -13,6 +13,7 @@ const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false)
   const [isNotifOpen, setIsNotifOpen] = useState(false)
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark')
+  const [imageError, setImageError] = useState(false)
   
   const { user } = useSelector(state => state.auth)
   const { notifications, unreadCount } = useSelector(state => state.notifications || { notifications: [], unreadCount: 0 })
@@ -33,8 +34,8 @@ const MainLayout = () => {
   const getImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http')) return path;
-    // Replace backslashes with forward slashes and ensure leading slash
-    return '/' + path.replace(/\\/g, '/').replace(/^\//, '');
+    const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+    return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
   }
 
   useEffect(() => {
@@ -121,8 +122,8 @@ const MainLayout = () => {
 
         <div className="sidebar-user">
           <div className="avatar">
-            {user?.profileImage ? (
-              <img src={getImageUrl(user.profileImage)} alt={user.name} />
+            {user?.profileImage && !imageError ? (
+              <img src={getImageUrl(user.profileImage)} alt={user.name} onError={() => setImageError(true)} />
             ) : (
               user?.name?.charAt(0).toUpperCase() || 'U'
             )}
@@ -233,8 +234,8 @@ const MainLayout = () => {
             </div>
             <div className="user-badge" style={{ cursor: 'pointer' }} onClick={() => navigate(`/${user?.role}/profile`)}>
               <div className="avatar-sm">
-                {user?.profileImage ? (
-                  <img src={getImageUrl(user.profileImage)} alt={user.name} />
+                {user?.profileImage && !imageError ? (
+                  <img src={getImageUrl(user.profileImage)} alt={user.name} onError={() => setImageError(true)} />
                 ) : (
                   user?.name?.charAt(0).toUpperCase() || 'U'
                 )}

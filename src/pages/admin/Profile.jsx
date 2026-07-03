@@ -6,12 +6,16 @@ import {
   FiTrendingUp, FiCheckCircle, FiX, FiUsers
 } from 'react-icons/fi'
 import { updateProfile, uploadProfileImage, getCurrentUser, changePassword } from '../../redux/slices/authSlice'
+import { getAdminDashboardStats } from '../../redux/slices/adminSlice'
 import { toast } from 'react-toastify'
 
 const AdminProfile = () => {
   const { user } = useSelector(state => state.auth)
+  const { stats } = useSelector(state => state.admin)
   const dispatch = useDispatch()
   const fileInputRef = useRef(null)
+  
+  const [imageError, setImageError] = useState(false)
   
   const [isEditing, setIsEditing] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
@@ -48,6 +52,8 @@ const AdminProfile = () => {
   }
 
   useEffect(() => {
+    dispatch(getAdminDashboardStats())
+    
     if (user) {
       setFormData({
         name: user.name || '',
@@ -150,18 +156,19 @@ const AdminProfile = () => {
     return user.name.charAt(0).toUpperCase()
   }
 
-  // Teacher stats from real data
-  const stats = [
-    { label: 'Total Exams', value: user?.totalExams || 0, icon: FiBook, color: '#6366f1' },
-    { label: 'Students', value: user?.totalStudents || 0, icon: FiUsers, color: '#10b981' },
-    { label: 'Avg Score', value: user?.avgScore ? `${user.avgScore}%` : '0%', icon: FiTrendingUp, color: '#8b5cf6' },
-    { label: 'Rating', value: user?.rating || '0', icon: FiAward, color: '#f59e0b' }
+  // Admin stats from real data
+  const statCards = [
+    { label: 'Total Users', value: stats?.totalUsers || 0, icon: FiUsers, color: '#6366f1' },
+    { label: 'Total Exams', value: stats?.totalExams || 0, icon: FiBook, color: '#8b5cf6' },
+    { label: 'Active Exams', value: stats?.activeExams || 0, icon: FiTrendingUp, color: '#10b981' },
+    { label: 'Results Published', value: stats?.totalResults || 0, icon: FiAward, color: '#f59e0b' }
   ]
 
   const getImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http')) return path;
-    return '/' + path.replace(/\\/g, '/').replace(/^\//, '');
+    const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+    return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
   }
 
   return (
@@ -172,8 +179,8 @@ const AdminProfile = () => {
           <div className="avatar-img">
             {previewImage ? (
               <img src={previewImage} alt="Preview" />
-            ) : profileImage ? (
-              <img src={getImageUrl(profileImage)} alt={user?.name} />
+            ) : profileImage && !imageError ? (
+              <img src={getImageUrl(profileImage)} alt={user?.name} onError={() => setImageError(true)} />
             ) : (
               getInitials()
             )}
@@ -230,7 +237,7 @@ const AdminProfile = () => {
 
       {/* Stats */}
       <div className="profile-stats">
-        {stats.map((stat, index) => {
+        {statCards.map((stat, index) => {
           const Icon = stat.icon
           return (
             <div className="stat-item" key={index}>

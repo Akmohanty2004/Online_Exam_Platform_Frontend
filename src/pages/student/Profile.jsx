@@ -39,7 +39,7 @@ const StudentProfile = () => {
     }
     try {
       await dispatch(changePassword({ 
-        currentPassword: passwordData.oldPassword, 
+        oldPassword: passwordData.oldPassword, 
         newPassword: passwordData.newPassword 
       })).unwrap()
       setShowPasswordForm(false)
@@ -188,7 +188,8 @@ const StudentProfile = () => {
   const getImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http')) return path;
-    return '/' + path.replace(/\\/g, '/').replace(/^\//, '');
+    const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+    return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
   }
 
   return (
