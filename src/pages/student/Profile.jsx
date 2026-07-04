@@ -49,7 +49,13 @@ const StudentProfile = () => {
     }
   }
 
-  // Load user data when component mounts or user changes
+  // Fetch latest data on mount
+  useEffect(() => {
+    dispatch(getCurrentUser())
+    dispatch(getStudentResults())
+  }, [dispatch])
+
+  // Update form when user data is available
   useEffect(() => {
     if (user) {
       setFormData({
@@ -63,8 +69,7 @@ const StudentProfile = () => {
       })
       setProfileImage(user.profileImage || null)
     }
-    dispatch(getStudentResults())
-  }, [user, dispatch])
+  }, [user])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target

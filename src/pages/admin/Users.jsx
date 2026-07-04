@@ -78,13 +78,27 @@ const AdminUsers = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'var(--text-main)',
+                        color: 'white',
                         fontWeight: '600',
-                        fontSize: '14px'
+                        fontSize: '14px',
+                        overflow: 'hidden',
+                        flexShrink: 0
                       }}>
-                        {user.name?.charAt(0).toUpperCase() || 'U'}
+                        {user.profileImage ? (
+                          <img 
+                            src={user.profileImage.startsWith('http') ? user.profileImage : `https://online-exam-platform-server-1.onrender.com/${user.profileImage.replace(/\\/g, '/').replace(/^\//, '')}`} 
+                            alt={user.name}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
+                          />
+                        ) : null}
+                        <span style={{ display: user.profileImage ? 'none' : 'block' }}>
+                          {user.name?.charAt(0).toUpperCase() || 'U'}
+                        </span>
                       </div>
-                      <span style={{ color: 'var(--text-main)' }}>{user.name}</span>
+                      <span style={{ color: 'var(--text-main)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', maxWidth: '200px' }}>
+                        {user.name}
+                      </span>
                     </div>
                   </td>
                   <td style={{ padding: '14px 20px', color: 'var(--dark-300)' }}>{user.email}</td>

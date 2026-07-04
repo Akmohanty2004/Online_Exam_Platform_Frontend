@@ -52,8 +52,11 @@ const AdminProfile = () => {
   }
 
   useEffect(() => {
+    dispatch(getCurrentUser())
     dispatch(getAdminDashboardStats())
-    
+  }, [dispatch])
+
+  useEffect(() => {
     if (user) {
       setFormData({
         name: user.name || '',

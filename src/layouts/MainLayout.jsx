@@ -243,8 +243,7 @@ const MainLayout = () => {
               <span className="role-text">{user?.role}</span>
             </div>
             <button 
-              className="btn-secondary" 
-              style={{ padding: '6px 14px', fontSize: '13px' }} 
+              className="btn-logout" 
               onClick={handleLogout}
             >
               <FiLogOut /> Logout

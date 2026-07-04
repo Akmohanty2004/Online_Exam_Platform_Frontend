@@ -48,6 +48,10 @@ const TeacherProfile = () => {
   }
 
   useEffect(() => {
+    dispatch(getCurrentUser())
+  }, [dispatch])
+
+  useEffect(() => {
     if (user) {
       setFormData({
         name: user.name || '',
