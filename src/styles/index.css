@@ -80,16 +80,16 @@ body[data-theme="light"] {
 
 /* ===== Light Theme Overrides ===== */
 [data-theme="light"] {
-  --dark-900: #f8fafc;
+  --dark-900: #eef2f6;
   --dark-800: #ffffff;
   --dark-700: #e2e8f0;
   --dark-600: #cbd5e1;
   --dark-500: #94a3b8;
   --dark-400: #64748b;
   --dark-300: #475569;
-  --dark-200: #ffffff;
-  --dark-100: #f1f5f9;
-  --dark-50: #ffffff;
+  --dark-200: #334155;
+  --dark-100: #1e293b;
+  --dark-50: #0f172a;
   
   --text-main: #0f172a;
 
@@ -103,11 +103,9 @@ body[data-theme="light"] {
 [data-theme="light"] .stat-card,
 [data-theme="light"] .glass,
 [data-theme="light"] .chart-container {
-  background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08) !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0,0,0,0.02) !important;
 }
 
 [data-theme="light"] .recent-item {
