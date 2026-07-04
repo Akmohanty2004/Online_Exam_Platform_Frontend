@@ -109,6 +109,7 @@ const StudentProfile = () => {
       if (imageUrl) {
         setProfileImage(imageUrl)
         setPreviewImage(null)
+        setImageError(false)
         
         // Update localStorage
         const userData = JSON.parse(localStorage.getItem('user') || '{}')

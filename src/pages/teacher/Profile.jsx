@@ -104,6 +104,7 @@ const TeacherProfile = () => {
       if (imageUrl) {
         setProfileImage(imageUrl)
         setPreviewImage(null)
+        setImageError(false)
         
         const userData = JSON.parse(localStorage.getItem('user') || '{}')
         userData.profileImage = imageUrl
