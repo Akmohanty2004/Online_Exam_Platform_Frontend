@@ -98,9 +98,10 @@ const StudentExamContent = () => {
   }, [dispatch, examId])
 
   useEffect(() => {
-    if (!currentExam?.exam || !isStarted) return;
+    const examObject = currentExam?.exam || currentExam
+    if (!examObject || !isStarted || Object.keys(examObject).length === 0) return;
     
-    if (currentExam.exam.fullscreenMode !== false) {
+    if (examObject.fullscreenMode !== false) {
       // Prevent tab switching
       const handleVisibilityChange = () => {
         if (document.hidden && !isSubmittedRef.current) {
@@ -138,8 +139,9 @@ const StudentExamContent = () => {
 
 
   useEffect(() => {
-    if (currentExam?.exam) {
-      const exam = currentExam.exam
+    const examObject = currentExam?.exam || currentExam
+    if (examObject && Object.keys(examObject).length > 0) {
+      const exam = examObject
       const now = new Date()
       const examDate = new Date(exam.date)
       const [hours, minutes] = exam.startTime.split(':')
@@ -199,9 +201,10 @@ const StudentExamContent = () => {
   }
 
   const handleAnswerSelect = (questionIndex, answer) => {
+    const questionsList = currentExam?.questions || []
     setAnswers(prev => ({
       ...prev,
-      [currentExam.questions[questionIndex]._id]: answer
+      [questionsList[questionIndex]?._id]: answer
     }))
     setQuestionStatus(prev => ({
       ...prev,
@@ -247,7 +250,8 @@ const StudentExamContent = () => {
       selectedAnswer
     }))
 
-    const timeTaken = Math.floor((currentExam.exam.duration * 60 - timeLeft) / 60)
+    const examObject = currentExam?.exam || currentExam
+    const timeTaken = Math.floor((examObject.duration * 60 - timeLeft) / 60)
     
     await dispatch(submitExam({
       examId,
@@ -304,8 +308,16 @@ const StudentExamContent = () => {
     )
   }
 
-  const exam = currentExam.exam
-  const questions = currentExam.questions || []
+  const exam = currentExam?.exam || currentExam
+  const questions = currentExam?.questions || []
+
+  if (!exam || Object.keys(exam).length === 0) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--dark-900)' }}>
+        <div style={{ color: 'var(--dark-400)', fontSize: '18px' }}>Loading exam details...</div>
+      </div>
+    )
+  }
 
   if (!isStarted) {
     return (

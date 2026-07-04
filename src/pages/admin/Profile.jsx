@@ -207,8 +207,8 @@ const AdminProfile = () => {
         </div>
         
         <div className="profile-info">
-          <h2>{user?.name || 'Teacher'}</h2>
-          <span className="role-badge teacher">Teacher</span>
+          <h2>{user?.name || 'Admin'}</h2>
+          <span className="role-badge admin">Admin</span>
           <div className="profile-meta">
             <span><FiMail /> {user?.email || 'N/A'}</span>
             <span><FiPhone /> {user?.phone || 'N/A'}</span>
