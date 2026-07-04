@@ -86,7 +86,7 @@ const AdminUsers = () => {
                       }}>
                         {user.profileImage ? (
                           <img 
-                            src={user.profileImage.startsWith('http') ? user.profileImage : `https://online-exam-platform-server-1.onrender.com/${user.profileImage.replace(/\\/g, '/').replace(/^\//, '')}`} 
+                            src={user.profileImage.startsWith('http') || user.profileImage.startsWith('data:image') ? user.profileImage : `https://online-exam-platform-server-1.onrender.com/${user.profileImage.replace(/\\/g, '/').replace(/^\//, '')}`} 
                             alt={user.name}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}

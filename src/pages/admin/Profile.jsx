@@ -104,7 +104,6 @@ const AdminProfile = () => {
     
     try {
       const result = await dispatch(uploadProfileImage(formData)).unwrap()
-      toast.success('Profile image updated successfully!')
       
       const imageUrl = result.imageUrl || result.user?.profileImage
       if (imageUrl) {
@@ -128,7 +127,6 @@ const AdminProfile = () => {
     try {
       const result = await dispatch(updateProfile(formData)).unwrap()
       setIsEditing(false)
-      toast.success('Profile updated successfully!')
       
       const userData = JSON.parse(localStorage.getItem('user') || '{}')
       Object.assign(userData, formData)
@@ -170,6 +168,7 @@ const AdminProfile = () => {
   const getImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http')) return path;
+    if (path.startsWith('data:image')) return path;
     const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
     return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
   }

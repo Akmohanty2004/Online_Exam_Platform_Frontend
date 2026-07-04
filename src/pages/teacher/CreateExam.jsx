@@ -178,7 +178,6 @@ const CreateExam = () => {
 
     try {
       const result = await dispatch(createExam(examPayload)).unwrap()
-      toast.success('Exam created successfully!')
       navigate('/teacher/exams')
     } catch (error) {
       // The slice already toasts the error, no need to toast here

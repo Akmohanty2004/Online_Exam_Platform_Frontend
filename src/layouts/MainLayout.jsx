@@ -27,6 +27,11 @@ const MainLayout = () => {
     localStorage.setItem('theme', theme)
   }, [theme])
 
+  // Reset image error if user profile image changes (e.g. they uploaded a new one)
+  useEffect(() => {
+    setImageError(false)
+  }, [user?.profileImage])
+
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light')
   }
@@ -34,6 +39,7 @@ const MainLayout = () => {
   const getImageUrl = (path) => {
     if (!path) return null;
     if (path.startsWith('http')) return path;
+    if (path.startsWith('data:image')) return path;
     const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
     return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
   }
