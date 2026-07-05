@@ -124,11 +124,18 @@ const StudentExamContent = () => {
       }
       
       document.addEventListener('visibilitychange', handleVisibilityChange)
-      window.addEventListener('blur', handleBlur)
+      
+      // Mobile devices often fire blur events falsely (e.g. when opening keyboard or scrolling)
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (!isMobile) {
+        window.addEventListener('blur', handleBlur)
+      }
 
       return () => {
         document.removeEventListener('visibilitychange', handleVisibilityChange)
-        window.removeEventListener('blur', handleBlur)
+        if (!isMobile) {
+          window.removeEventListener('blur', handleBlur)
+        }
         if (document.fullscreenElement) {
           document.exitFullscreen().catch(err => console.log(err))
         }
