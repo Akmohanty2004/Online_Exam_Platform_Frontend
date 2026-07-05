@@ -368,7 +368,7 @@ const Register = () => {
               display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px'
             }}>
               <span style={{ fontSize: '18px' }}>⚠️</span>
-              {error}
+              {typeof error === 'string' ? error : 'Registration failed'}
             </div>
           )}
 
