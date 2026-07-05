@@ -8,7 +8,7 @@ import {
   FiEye, FiEyeOff, FiUserCheck, FiBook,
   FiCalendar, FiAward
 } from 'react-icons/fi'
-import { registerUser, verifyOtp, clearError } from '../../redux/slices/authSlice'
+import { registerUser } from '../../redux/slices/authSlice'
 import registerBg from '../../assets/registerbackground.png'
 
 const Register = () => {
@@ -16,17 +16,9 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [role, setRole] = useState('student')
   
-  const [showOtpModal, setShowOtpModal] = useState(false)
-  const [otpValue, setOtpValue] = useState('')
-  const [registeredEmail, setRegisteredEmail] = useState('')
-  
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isLoading, error } = useSelector(state => state.auth)
-
-  useEffect(() => {
-    dispatch(clearError())
-  }, [dispatch])
+  const { isLoading } = useSelector(state => state.auth)
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
@@ -35,17 +27,6 @@ const Register = () => {
       ...data,
       role
     }))
-    if (result.payload?.requireOtp) {
-      setRegisteredEmail(result.payload.email)
-      setShowOtpModal(true)
-    } else if (result.payload?.user) {
-      navigate(`/${role}/dashboard`)
-    }
-  }
-
-  const handleVerifyOtp = async () => {
-    if (!otpValue) return;
-    const result = await dispatch(verifyOtp({ email: registeredEmail, otp: otpValue, type: 'register' }));
     if (result.payload?.user) {
       navigate(`/${role}/dashboard`)
     }
@@ -361,17 +342,6 @@ const Register = () => {
             </div>
           </div>
 
-          {error && (
-            <div style={{
-              background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)',
-              borderRadius: '12px', padding: '12px 16px', color: '#fca5a5', fontSize: '14px',
-              display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px'
-            }}>
-              <span style={{ fontSize: '18px' }}>⚠️</span>
-              {typeof error === 'string' ? error : 'Registration failed'}
-            </div>
-          )}
-
           <motion.button
             whileHover={!isLoading ? { scale: 1.01, boxShadow: '0 8px 25px rgba(16,185,129,0.3)' } : {}}
             whileTap={!isLoading ? { scale: 0.99 } : {}}
@@ -396,71 +366,6 @@ const Register = () => {
           </div>
         </form>
       </motion.div>
-
-      {/* OTP Modal */}
-      {showOtpModal && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 1000,
-          display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}>
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }} 
-            animate={{ scale: 1, opacity: 1 }}
-            style={{
-              background: 'var(--dark-800)',
-              padding: '30px',
-              borderRadius: '20px',
-              border: '1px solid rgba(255,255,255,0.1)',
-              width: '90%',
-              maxWidth: '400px',
-              textAlign: 'center',
-              position: 'relative'
-            }}
-          >
-            <button 
-              onClick={() => setShowOtpModal(false)}
-              style={{
-                position: 'absolute', top: '15px', right: '15px',
-                background: 'transparent', border: 'none', color: '#94a3b8',
-                fontSize: '24px', cursor: 'pointer', padding: '0 5px'
-              }}
-            >
-              &times;
-            </button>
-            <h2 style={{ color: 'white', marginBottom: '10px' }}>Verify Your Email</h2>
-            <p style={{ color: '#94a3b8', marginBottom: '20px', fontSize: '14px' }}>
-              We sent a 6-digit OTP to <strong>{registeredEmail}</strong>
-            </p>
-            <input 
-              type="text" 
-              maxLength={6}
-              placeholder="Enter OTP"
-              value={otpValue}
-              onChange={e => setOtpValue(e.target.value)}
-              style={{
-                width: '100%', padding: '15px', background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px',
-                color: 'white', fontSize: '20px', textAlign: 'center', letterSpacing: '5px',
-                marginBottom: '20px', outline: 'none'
-              }}
-            />
-            <button 
-              onClick={handleVerifyOtp}
-              disabled={isLoading || otpValue.length < 6}
-              style={{
-                width: '100%', padding: '15px', background: 'var(--primary-500)',
-                color: 'white', border: 'none', borderRadius: '12px', fontWeight: 'bold',
-                cursor: (isLoading || otpValue.length < 6) ? 'not-allowed' : 'pointer',
-                opacity: (isLoading || otpValue.length < 6) ? 0.7 : 1
-              }}
-            >
-              {isLoading ? 'Verifying...' : 'Verify OTP'}
-            </button>
-          </motion.div>
-        </div>
-      )}
-
     </div>
   )
 }
