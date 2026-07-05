@@ -232,9 +232,11 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false
-        state.isAuthenticated = true
-        state.user = action.payload.user
-        state.token = action.payload.token
+        if (action.payload.token) {
+          state.isAuthenticated = true
+          state.user = action.payload.user
+          state.token = action.payload.token
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false
@@ -248,9 +250,11 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false
-        state.isAuthenticated = true
-        state.user = action.payload.user
-        state.token = action.payload.token
+        if (action.payload.token) {
+          state.isAuthenticated = true
+          state.user = action.payload.user
+          state.token = action.payload.token
+        }
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false
