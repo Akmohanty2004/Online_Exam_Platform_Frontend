@@ -345,9 +345,20 @@ const Login = () => {
               border: '1px solid rgba(255,255,255,0.1)',
               width: '90%',
               maxWidth: '400px',
-              textAlign: 'center'
+              textAlign: 'center',
+              position: 'relative'
             }}
           >
+            <button 
+              onClick={() => setShowOtpModal(false)}
+              style={{
+                position: 'absolute', top: '15px', right: '15px',
+                background: 'transparent', border: 'none', color: '#94a3b8',
+                fontSize: '24px', cursor: 'pointer', padding: '0 5px'
+              }}
+            >
+              &times;
+            </button>
             <h2 style={{ color: 'white', marginBottom: '10px' }}>Verify Your Email</h2>
             <p style={{ color: '#94a3b8', marginBottom: '20px', fontSize: '14px' }}>
               We sent a 6-digit OTP to <strong>{email}</strong>
