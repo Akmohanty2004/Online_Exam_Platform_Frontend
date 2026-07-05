@@ -59,6 +59,23 @@
     justify-content: flex-start;
   }
   
+  .header-right {
+    gap: 8px;
+  }
+  
+  .btn-logout {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .btn-logout svg {
+    margin: 0;
+  }
+  
+  .user-badge {
+    display: none;
+  }
+  
   /* Layout fixes */
   .main-content, .main-content.expanded {
     margin-left: 0 !important;

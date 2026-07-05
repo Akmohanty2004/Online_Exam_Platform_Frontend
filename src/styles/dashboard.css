@@ -13,6 +13,25 @@
   flex-direction: column;
 }
 
+/* Skeleton Loading Animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+.skeleton {
+  animation: pulse 1.5s infinite;
+  background: var(--dark-700);
+  border-radius: var(--border-radius);
+}
+[data-theme="light"] .skeleton {
+  background: var(--dark-200);
+}
+.banner-skeleton { height: 100px; margin-bottom: 24px; }
+.card-skeleton { height: 120px; }
+.chart-skeleton { height: 350px; }
+
+
 .main-content.expanded {
   margin-left: var(--sidebar-collapsed);
 }

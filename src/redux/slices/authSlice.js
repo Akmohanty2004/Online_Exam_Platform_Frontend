@@ -15,13 +15,18 @@ export const loginUser = createAsyncThunk(
         role
       })
       
+      if (response.data.requireOtp) {
+        toast.success(response.data.message)
+        return response.data;
+      }
+      
       if (response.data.token) {
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('user', JSON.stringify(response.data.user))
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+        toast.success('Login successful!')
       }
       
-      toast.success('Login successful!')
       return response.data
     } catch (error) {
       const message = error.response?.data?.message || 'Login failed'
@@ -38,16 +43,44 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axios.post(`${API_URL}/auth/register`, userData)
       
+      if (response.data.requireOtp) {
+        toast.success(response.data.message)
+        return response.data;
+      }
+      
       if (response.data.token) {
         localStorage.setItem('token', response.data.token)
         localStorage.setItem('user', JSON.stringify(response.data.user))
         axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+        toast.success('Registration successful!')
       }
       
-      toast.success('Registration successful!')
       return response.data
     } catch (error) {
       const message = error.response?.data?.message || 'Registration failed'
+      toast.error(message)
+      return rejectWithValue(message)
+    }
+  }
+)
+
+// Verify OTP
+export const verifyOtp = createAsyncThunk(
+  'auth/verifyOtp',
+  async ({ email, otp, type }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${API_URL}/auth/verify-otp`, { email, otp, type })
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+        toast.success('Verified successfully!')
+      }
+      
+      return response.data
+    } catch (error) {
+      const message = error.response?.data?.message || 'Verification failed'
       toast.error(message)
       return rejectWithValue(message)
     }

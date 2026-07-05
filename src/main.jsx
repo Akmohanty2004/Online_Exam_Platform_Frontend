@@ -16,6 +16,27 @@ import axios from 'axios'
 // Set global base URL for production backend
 axios.defaults.baseURL = 'https://online-exam-platform-server-1.onrender.com'
 
+import { toast } from 'react-toastify'
+const originalSuccess = toast.success
+const originalError = toast.error
+
+const isMobile = () => window.innerWidth <= 768
+
+toast.success = (msg, options) => {
+  if (isMobile()) {
+    alert('SUCCESS: ' + msg)
+  } else {
+    originalSuccess(msg, options)
+  }
+}
+
+toast.error = (msg, options) => {
+  if (isMobile()) {
+    alert('ERROR: ' + msg)
+  } else {
+    originalError(msg, options)
+  }
+}
 // Component to load user data on app start
 const AppWithAuth = () => {
   const dispatch = useDispatch()

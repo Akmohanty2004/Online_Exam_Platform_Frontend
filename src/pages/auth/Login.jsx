@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FiMail, FiLock, FiEye, FiEyeOff, FiUser, FiUserCheck, FiShield } from 'react-icons/fi'
-import { loginUser } from '../../redux/slices/authSlice'
+import { loginUser, verifyOtp } from '../../redux/slices/authSlice'
 import loginBg from '../../assets/loginbackground.png'
 
 const Login = () => {
@@ -12,6 +12,10 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})  
+  
+  const [showOtpModal, setShowOtpModal] = useState(false)
+  const [otpValue, setOtpValue] = useState('')
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isLoading, error, isAuthenticated, user } = useSelector(state => state.auth)
@@ -40,7 +44,15 @@ const Login = () => {
     }
     
     setErrors({});
-    await dispatch(loginUser({ email, password, role: selectedRole }))
+    const result = await dispatch(loginUser({ email, password, role: selectedRole }))
+    if (result.payload?.requireOtp) {
+      setShowOtpModal(true)
+    }
+  }
+
+  const handleVerifyOtp = async () => {
+    if (!otpValue) return;
+    await dispatch(verifyOtp({ email, otp: otpValue, type: 'login' }));
   }
 
   // Text animation variants
@@ -315,6 +327,59 @@ const Login = () => {
           )}
         </form>
       </motion.div>
+
+      {/* OTP Modal */}
+      {showOtpModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 1000,
+          display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }} 
+            animate={{ scale: 1, opacity: 1 }}
+            style={{
+              background: 'var(--dark-800)',
+              padding: '30px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)',
+              width: '90%',
+              maxWidth: '400px',
+              textAlign: 'center'
+            }}
+          >
+            <h2 style={{ color: 'white', marginBottom: '10px' }}>Verify Your Email</h2>
+            <p style={{ color: '#94a3b8', marginBottom: '20px', fontSize: '14px' }}>
+              We sent a 6-digit OTP to <strong>{email}</strong>
+            </p>
+            <input 
+              type="text" 
+              maxLength={6}
+              placeholder="Enter OTP"
+              value={otpValue}
+              onChange={e => setOtpValue(e.target.value)}
+              style={{
+                width: '100%', padding: '15px', background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px',
+                color: 'white', fontSize: '20px', textAlign: 'center', letterSpacing: '5px',
+                marginBottom: '20px', outline: 'none'
+              }}
+            />
+            <button 
+              onClick={handleVerifyOtp}
+              disabled={isLoading || otpValue.length < 6}
+              style={{
+                width: '100%', padding: '15px', background: 'var(--primary-500)',
+                color: 'white', border: 'none', borderRadius: '12px', fontWeight: 'bold',
+                cursor: (isLoading || otpValue.length < 6) ? 'not-allowed' : 'pointer',
+                opacity: (isLoading || otpValue.length < 6) ? 0.7 : 1
+              }}
+            >
+              {isLoading ? 'Verifying...' : 'Verify OTP'}
+            </button>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
