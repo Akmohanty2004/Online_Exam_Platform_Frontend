@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
-import toast from '..\..\utils/toast'
+import { toast } from 'react-toastify'
 
 const API_URL = '/api'
 
