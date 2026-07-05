@@ -8,7 +8,7 @@ import {
   FiEye, FiEyeOff, FiUserCheck, FiBook,
   FiCalendar, FiAward
 } from 'react-icons/fi'
-import { registerUser, verifyOtp } from '../../redux/slices/authSlice'
+import { registerUser, verifyOtp, clearError } from '../../redux/slices/authSlice'
 import registerBg from '../../assets/registerbackground.png'
 
 const Register = () => {
@@ -22,7 +22,11 @@ const Register = () => {
   
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isLoading } = useSelector(state => state.auth)
+  const { isLoading, error } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm()
 
@@ -356,6 +360,17 @@ const Register = () => {
               {errors.address && <span style={{ color: '#f87171', fontSize: '12px', marginTop: '2px' }}>{errors.address.message}</span>}
             </div>
           </div>
+
+          {error && (
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)',
+              borderRadius: '12px', padding: '12px 16px', color: '#fca5a5', fontSize: '14px',
+              display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '15px'
+            }}>
+              <span style={{ fontSize: '18px' }}>⚠️</span>
+              {error}
+            </div>
+          )}
 
           <motion.button
             whileHover={!isLoading ? { scale: 1.01, boxShadow: '0 8px 25px rgba(16,185,129,0.3)' } : {}}

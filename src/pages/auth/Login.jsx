@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
 import { FiMail, FiLock, FiEye, FiEyeOff, FiUser, FiUserCheck, FiShield } from 'react-icons/fi'
-import { loginUser, verifyOtp } from '../../redux/slices/authSlice'
+import { loginUser, verifyOtp, clearError } from '../../redux/slices/authSlice'
 import loginBg from '../../assets/loginbackground.png'
 
 const Login = () => {
@@ -19,6 +19,10 @@ const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { isLoading, error, isAuthenticated, user } = useSelector(state => state.auth)
+
+  useEffect(() => {
+    dispatch(clearError())
+  }, [dispatch])
 
   useEffect(() => {
     if (isAuthenticated && user) {
