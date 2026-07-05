@@ -9,7 +9,7 @@ import {
 import Webcam from 'react-webcam'
 import { getStudentExam } from '../../redux/slices/examSlice'
 import { submitExam } from '../../redux/slices/resultSlice'
-import { toast } from 'react-toastify'
+import toast from '../../utils/toast'
 import Calculator from '../../components/common/Calculator'
 
 class ErrorBoundary extends React.Component {

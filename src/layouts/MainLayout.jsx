@@ -8,6 +8,8 @@ import {
 } from 'react-icons/fi'
 import { logoutUser } from '../redux/slices/authSlice'
 import { getNotifications, markAsRead, markAllAsRead } from '../redux/slices/notificationSlice'
+import { motion, AnimatePresence } from 'framer-motion'
+
 const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
@@ -257,7 +259,18 @@ const MainLayout = () => {
           </div>
         </header>
         <div className="page-content">
-          <Outlet />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              style={{ width: '100%', height: '100%' }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
     </div>

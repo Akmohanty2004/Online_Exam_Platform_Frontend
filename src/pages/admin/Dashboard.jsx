@@ -163,6 +163,24 @@ const AdminDashboard = () => {
     { label: 'Failed', value: stats?.totalFailed || 0, icon: FiTrendingUp, color: 'red' },
   ]
 
+  if (isLoading) {
+    return (
+      <div>
+        <div className="welcome-banner skeleton" style={{ height: '80px', marginBottom: '20px' }}></div>
+        <div className="stats-grid">
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <div className="stat-card skeleton skeleton-card" key={i}></div>
+          ))}
+        </div>
+        <div className="charts-grid" style={{ marginTop: '20px' }}>
+          <div className="chart-container skeleton skeleton-chart"></div>
+          <div className="chart-container skeleton skeleton-chart"></div>
+        </div>
+        <div className="chart-container skeleton skeleton-chart" style={{ marginTop: '20px' }}></div>
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="welcome-banner">

@@ -32,6 +32,13 @@ const AdminUsers = () => {
     }
   }
 
+  const isOnline = (lastLogin) => {
+    if (!lastLogin) return false;
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+    return new Date(lastLogin) >= oneDayAgo;
+  };
+
   return (
     <div>
       <div className="welcome-banner">
@@ -86,7 +93,7 @@ const AdminUsers = () => {
                       }}>
                         {user.profileImage ? (
                           <img 
-                            src={user.profileImage.startsWith('http') || user.profileImage.startsWith('data:image') ? user.profileImage : `https://online-exam-platform-server-1.onrender.com/${user.profileImage.replace(/\\/g, '/').replace(/^\//, '')}`} 
+                            src={user.profileImage.startsWith('http') || user.profileImage.startsWith('data:image') ? user.profileImage : `https://online-exam-platform-server-1.onrender.com/${user.profileImage.replace(/\\\\/g, '/').replace(/^\//, '')}`}
                             alt={user.name}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
@@ -106,8 +113,8 @@ const AdminUsers = () => {
                     <span className={`badge ${getRoleBadge(user.role)}`}>{user.role}</span>
                   </td>
                   <td style={{ padding: '14px 20px' }}>
-                    <span className={`badge ${user.isActive ? 'badge-success' : 'badge-danger'}`}>
-                      {user.isActive ? 'Active' : 'Inactive'}
+                    <span className={`badge ${isOnline(user.lastLogin) ? 'badge-success' : 'badge-secondary'}`}>
+                      {isOnline(user.lastLogin) ? 'Online' : 'Offline'}
                     </span>
                   </td>
                   <td style={{ padding: '14px 20px', textAlign: 'right' }}>

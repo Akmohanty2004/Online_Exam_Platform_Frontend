@@ -10,7 +10,7 @@ import {
 } from 'react-icons/fi'
 import { getStudentExams } from '../../redux/slices/examSlice'
 import { getStudentResults } from '../../redux/slices/resultSlice'
-import { toast } from 'react-toastify'
+import toast from '../../utils/toast'
 
 const StudentExams = () => {
   const [searchTerm, setSearchTerm] = useState('')

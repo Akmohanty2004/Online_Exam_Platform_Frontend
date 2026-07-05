@@ -7,7 +7,7 @@ import {
 } from 'react-icons/fi'
 import { updateProfile, uploadProfileImage, getCurrentUser, changePassword } from '../../redux/slices/authSlice'
 import { getAdminDashboardStats } from '../../redux/slices/adminSlice'
-import { toast } from 'react-toastify'
+import toast from '../../utils/toast'
 
 const AdminProfile = () => {
   const { user } = useSelector(state => state.auth)

@@ -9,7 +9,7 @@ import {
   FiChevronLeft, FiCopy, FiEye, FiEyeOff
 } from 'react-icons/fi'
 import { createExam } from '../../redux/slices/examSlice'
-import { toast } from 'react-toastify'
+import toast from '../../utils/toast'
 
 const CreateExam = () => {
   const navigate = useNavigate()

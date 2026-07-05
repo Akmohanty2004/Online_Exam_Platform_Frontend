@@ -6,7 +6,7 @@ import {
   FiTrendingUp, FiCheckCircle, FiX, FiUsers
 } from 'react-icons/fi'
 import { updateProfile, uploadProfileImage, getCurrentUser, changePassword } from '../../redux/slices/authSlice'
-import { toast } from 'react-toastify'
+import toast from '../../utils/toast'
 
 const TeacherProfile = () => {
   const { user } = useSelector(state => state.auth)
