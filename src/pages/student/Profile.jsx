@@ -193,7 +193,7 @@ const StudentProfile = () => {
     if (!path) return null;
     if (path.startsWith('http')) return path;
     if (path.startsWith('data:image')) return path;
-    const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+    const cleanPath = path.replace(///g, '/').replace(/^///, '');
     return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
   }
 

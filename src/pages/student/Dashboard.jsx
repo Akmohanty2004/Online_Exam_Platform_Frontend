@@ -202,24 +202,6 @@ const StudentDashboard = () => {
     { label: 'Rank', value: stats.rank === '-' ? '-' : `#${stats.rank}`, icon: FiAward, color: 'yellow' },
   ]
 
-  if (isLoading) {
-    return (
-      <div>
-        <div className="welcome-banner skeleton" style={{ height: '80px', marginBottom: '20px' }}></div>
-        <div className="stats-grid">
-          {[1, 2, 3, 4].map(i => (
-            <div className="stat-card skeleton skeleton-card" key={i}></div>
-          ))}
-        </div>
-        <div className="charts-grid" style={{ marginTop: '20px' }}>
-          <div className="chart-container skeleton skeleton-chart"></div>
-          <div className="chart-container skeleton skeleton-chart"></div>
-        </div>
-        <div className="chart-container skeleton skeleton-chart" style={{ marginTop: '20px' }}></div>
-      </div>
-    )
-  }
-
   return (
     <div>
       <div className="welcome-banner">

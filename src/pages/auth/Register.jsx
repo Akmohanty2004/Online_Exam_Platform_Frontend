@@ -197,7 +197,7 @@ const Register = () => {
               <div style={{ position: 'relative' }}>
                 <FiMail style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', fontSize: '16px' }} />
                 <input
-                  type="email" {...register('email', { required: 'Please fill this Email field', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email' } })} placeholder="Enter your email"
+                  type="email" {...register('email', { required: 'Please fill this Email field', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+/.[A-Z]{2,}$/i, message: 'Invalid email' } })} placeholder="Enter your email"
                   style={{
                     width: '100%', padding: '12px 16px 12px 42px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)',
                     borderRadius: '14px', color: 'white', fontSize: '14px', outline: 'none', transition: 'all 0.3s ease'
