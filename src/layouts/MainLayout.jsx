@@ -41,7 +41,7 @@ const MainLayout = () => {
     if (path.startsWith('http')) return path;
     if (path.startsWith('data:image')) return path;
     const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
-    return `https://online-exam-platform-server-1.onrender.com/${cleanPath}`;
+    return `https://online-exam-platform-server-5onvzuva2-try-best.vercel.app/${cleanPath}`;
   }
 
   useEffect(() => {
