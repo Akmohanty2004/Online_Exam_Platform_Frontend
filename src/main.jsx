@@ -14,7 +14,7 @@ import './styles/responsive.css'
 import axios from 'axios'
 
 // Set global base URL for production backend
-axios.defaults.baseURL = 'https://online-exam-platform-server-5onvzuva2-try-best.vercel.app'
+axios.defaults.baseURL = 'https://online-exam-platform-server-acucdo0xr-try-best.vercel.app/'
 // axios.defaults.baseURL = 'http://localhost:5000'
 
 // Component to load user data on app start
