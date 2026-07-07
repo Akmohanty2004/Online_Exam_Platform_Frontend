@@ -15,6 +15,7 @@ const TeacherProfile = () => {
   
   const [isEditing, setIsEditing] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [imageError, setImageError] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
