@@ -18,6 +18,8 @@ const Register = () => {
   const [showOTP, setShowOTP] = useState(false)
   const [otp, setOtp] = useState('')
   const [otpError, setOtpError] = useState('')
+  const [adminOtp, setAdminOtp] = useState('')
+  const [adminOtpError, setAdminOtpError] = useState('')
   
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -42,10 +44,17 @@ const Register = () => {
       return
     }
     setOtpError('')
+
+    if (role === 'teacher' && !adminOtp) {
+      setAdminOtpError('Please enter the Admin OTP')
+      return
+    }
+    setAdminOtpError('')
+
     const formData = getValues()
-    const resultAction = await dispatch(verifyRegisterUser({ ...formData, role, otp }))
+    const resultAction = await dispatch(verifyRegisterUser({ ...formData, role, otp, adminOtp: role === 'teacher' ? adminOtp : undefined }))
     if (verifyRegisterUser.fulfilled.match(resultAction)) {
-      navigate(`/${role}/dashboard`)
+      navigate('/login')
     }
   }
 
@@ -188,17 +197,32 @@ const Register = () => {
               <div style={{ textAlign: 'center', marginBottom: '32px' }}>
                 <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '72px', height: '72px', borderRadius: '20px', background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)', fontSize: '32px', color: 'white', marginBottom: '16px', boxShadow: '0 10px 25px rgba(59,130,246,0.4)' }}>✉️</motion.div>
                 <h1 style={{ fontSize: '28px', fontWeight: 800, background: 'linear-gradient(135deg, #fff, #93c5fd)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '-0.5px' }}>Check Your Email</h1>
-                <p style={{ color: '#94a3b8', fontSize: '15px', marginTop: '8px', lineHeight: '1.5' }}>We've sent a 6-digit OTP to complete your registration.</p>
+                <p style={{ color: '#94a3b8', fontSize: '15px', marginTop: '8px', lineHeight: '1.5' }}>
+                  {role === 'teacher' ? "We've sent one OTP to your email and another to the Admin." : "We've sent a 6-digit OTP to complete your registration."}
+                </p>
               </div>
 
               <form onSubmit={handleVerifyOTP} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <label style={{ fontSize: '14px', fontWeight: 600, color: '#e2e8f0' }}>Enter OTP</label>
-                  <div style={{ position: 'relative' }}>
-                    <FiKey style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', fontSize: '18px' }} />
-                    <input type="text" maxLength="6" value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))} placeholder="Enter 6-digit code" style={{ width: '100%', padding: '14px 18px 14px 48px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', color: 'white', fontSize: '18px', letterSpacing: '4px', outline: 'none', transition: 'all 0.3s ease', textAlign: 'center' }} onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.background = 'rgba(255, 255, 255, 0.1)' }} onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.target.style.background = 'rgba(255, 255, 255, 0.05)' }} />
+                <div style={{ display: 'grid', gridTemplateColumns: role === 'teacher' ? '1fr 1fr' : '1fr', gap: '16px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <label style={{ fontSize: '14px', fontWeight: 600, color: '#e2e8f0' }}>{role === 'teacher' ? 'Your OTP (Sent to your email)' : 'Enter OTP'}</label>
+                    <div style={{ position: 'relative' }}>
+                      <FiKey style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', fontSize: '18px' }} />
+                      <input type="text" maxLength="6" value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))} placeholder="Enter 6-digit code" style={{ width: '100%', padding: '14px 18px 14px 48px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', color: 'white', fontSize: '18px', letterSpacing: '4px', outline: 'none', transition: 'all 0.3s ease', textAlign: 'center' }} onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.background = 'rgba(255, 255, 255, 0.1)' }} onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.target.style.background = 'rgba(255, 255, 255, 0.05)' }} />
+                    </div>
+                    {otpError && <span style={{ color: '#f87171', fontSize: '13px', marginTop: '4px' }}>{otpError}</span>}
                   </div>
-                  {otpError && <span style={{ color: '#f87171', fontSize: '13px', marginTop: '4px' }}>{otpError}</span>}
+
+                  {role === 'teacher' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <label style={{ fontSize: '14px', fontWeight: 600, color: '#e2e8f0' }}>Admin OTP (Sent to Admin)</label>
+                      <div style={{ position: 'relative' }}>
+                        <FiKey style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#64748b', fontSize: '18px' }} />
+                        <input type="text" maxLength="6" value={adminOtp} onChange={(e) => setAdminOtp(e.target.value.replace(/\D/g, ''))} placeholder="6-digit admin code" style={{ width: '100%', padding: '14px 18px 14px 48px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', color: 'white', fontSize: '18px', letterSpacing: '4px', outline: 'none', transition: 'all 0.3s ease', textAlign: 'center' }} onFocus={(e) => { e.target.style.borderColor = '#8b5cf6'; e.target.style.background = 'rgba(255, 255, 255, 0.1)' }} onBlur={(e) => { e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'; e.target.style.background = 'rgba(255, 255, 255, 0.05)' }} />
+                      </div>
+                      {adminOtpError && <span style={{ color: '#f87171', fontSize: '13px', marginTop: '4px' }}>{adminOtpError}</span>}
+                    </div>
+                  )}
                 </div>
 
                 {error && (

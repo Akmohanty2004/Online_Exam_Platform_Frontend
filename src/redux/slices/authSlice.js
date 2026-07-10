@@ -75,13 +75,7 @@ export const verifyRegisterUser = createAsyncThunk(
     try {
       const response = await axios.post(`${API_URL}/auth/verify-register`, userData)
       
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
-      }
-      
-      toast.success('Successfully added OTP system like. Registration successful!')
+      toast.success(response.data.message || 'Registration successful! Please login.')
       return response.data
     } catch (error) {
       const message = error.response?.data?.message || 'OTP Verification failed'
